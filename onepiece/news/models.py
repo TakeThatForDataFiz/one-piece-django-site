@@ -60,7 +60,7 @@ class Episode(models.Model):
     air_date = models.DateField()
 
     def __str__(self):
-        return f'Episode: {self.number} - {self.title} - Released: {self.release_date}'
+        return f'Episode: {self.number} - {self.title} - Released: {self.air_date}'
 
 
 class Chapter(models.Model):
