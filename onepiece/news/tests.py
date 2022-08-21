@@ -13,9 +13,10 @@ class MangaSimpleHandlerTest(TestCase):
     def setUp(self):
         self.command = Command()
         self.manga = Manga.objects.create(name="One Piece",
-                                          plot_summary='Twenty two years ago, the legendary pirate, Gold Roger was executed. His final words told')
+                                          plot_summary='Twenty two years ago, the legendary pirate, Gold Roger was executed. His final words told',
+                                          author="Eiichiro Oda")
         self.tags = self.command.get_bs4_soup()
-        self.parsed_name, self.des = self.command.parse_manga_information(
+        self.parsed_name, self.des, self.author = self.command.parse_manga_information(
             self.tags)
 
     def test_api_response_parse(self):
@@ -30,11 +31,16 @@ class MangaSimpleHandlerTest(TestCase):
         '''test case that determines whether manga description is parsed correctly'''
         # normalize incoming descriptions
         norm_des = self.des.lower().replace(' ', '')
-        norm_sum = self.manga.plot_summary.lower().replace(' ', '')
+        norm_sum = self.manga.plot_summary.lower().replace(
+            ' ', '')  # sample mock description
         self.assertIn(norm_sum, norm_des)
 
+    def test_manga_author_parsed(self):
+        ''' test case that determines whether manga author is parsed correctly'''
+        self.assertEqual(self.author, self.manga.author)
 
-class EpiosdeTests(TestCase):
+
+class EpisodeTests(TestCase):
     def setUp(self):
         self.episode = Episode.objects.create(
             title='Awesome Sample One Piece',
